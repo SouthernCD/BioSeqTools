@@ -4,6 +4,12 @@ def get_versions():
 
 versions = [
     {
+        "number": "0.2.0",
+        "features": [
+            "1. Rename project",
+        ],
+    },
+    {
         "number": "0.1.0",
         "features": [
             "1. Separate SeqParser from ToolBiox",

@@ -1,5 +1,5 @@
 import argparse
-from seqparser.pipelines import *
+from bioseqtools.pipelines import *
 
 
 def args_init():
