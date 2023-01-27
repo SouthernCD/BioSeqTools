@@ -4,6 +4,12 @@ def get_versions():
 
 versions = [
     {
+        "number": "0.3.0",
+        "features": [
+            "1. Remove code for RNA-seq",
+        ],
+    },
+    {
         "number": "0.2.0",
         "features": [
             "1. Rename project",

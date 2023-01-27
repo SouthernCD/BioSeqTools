@@ -176,19 +176,6 @@ def subfasta(db_fasta_file, search_string, input_file, RNA_flag, output_file, be
         F1.close()
 
 
-def extract_longest_isofrom_from_gene_in_trinity(trinity_output):
-    longest_dict = {}
-    for record in sb.read_fasta_big(trinity_output):
-        cluster_id, gene_id, isoform_id = re.match(r'^(\S+c\d+)_(g\d+)_(i\d+)$',
-                                                   record.seqname_short()).groups()
-        gene_name = cluster_id + "_" + gene_id
-        if not gene_name in longest_dict:
-            longest_dict[gene_name] = record
-        elif len(longest_dict[gene_name].seq) < len(record.seq):
-            longest_dict[gene_name] = record
-    return longest_dict
-
-
 def split_fasta(input_file, output_dir, outpre, contig_model=False, unit_num=None, file_size=None):
     mkdir(output_dir, True)
 
@@ -213,7 +200,8 @@ def split_fasta(input_file, output_dir, outpre, contig_model=False, unit_num=Non
                 F1.close()
                 file_num = file_num + 1
                 if all_used < len(record_dict):
-                    F1 = open(output_dir + "/%s%d.fa" % (outpre, file_num), 'w')
+                    F1 = open(output_dir + "/%s%d.fa" %
+                              (outpre, file_num), 'w')
                 num_used = 0
 
         try:
@@ -573,35 +561,6 @@ def ExtractNr_main(args):
         ID_list), output_file, short_name=long_name)
     print("%d records found in %d queries" % (found_num, want_num))
 
-# TrinityGene
-
-
-def TrinityGene_main(args):
-    Trinity_output = args.Trinity_output
-    Trinity_gene = args.Trinity_gene
-    output = extract_longest_isofrom_from_gene_in_trinity(Trinity_output)
-    with open(Trinity_gene, "w") as f:
-        for i in output:
-            i = output[i]
-            i.wrap(60)
-            f.write(">%s\n%s" % (i.seqname, i.seq))
-
-# GenerateTrinityGeneTransMap
-
-
-def GenerateTrinityGeneTransMap_main(args):
-    Trinity_output = args.Trinity_output
-    Trinity_gene = args.gene_map_file
-    with open(Trinity_output, 'r') as f:
-        with open(Trinity_gene, 'w') as w:
-            for each_line in f:
-                each_line = each_line.strip()
-                record_head = re.match(r"^>", each_line)
-                if record_head:
-                    seqname = re.sub(r'^>', '', each_line)
-                    name_short = re.search('^(\S+)', seqname).group(1)
-                    gene_name = re.sub(r'\_i\d+$', '', name_short)
-                    w.write("%s\t%s\n" % (gene_name, name_short))
 
 # SeqLength
 
@@ -1053,6 +1012,7 @@ def FragmentGenome_main(args):
 
 # ReGetContig
 
+
 def contig_range(SeqRecord_input):
     sequence = str(SeqRecord_input.seq)
 
@@ -1073,11 +1033,12 @@ def contig_range(SeqRecord_input):
             "ID": "%s_%d" % (SeqRecord_input.id, num)
         }
         top_feature = SeqFeature(FeatureLocation(contig_range_tmp[0] - 1, contig_range_tmp[1]),
-                                    type="contig", qualifiers=qualifiers)
+                                 type="contig", qualifiers=qualifiers)
         SeqRecord_input.features.append(top_feature)
         num = num + 1
 
     return SeqRecord_input
+
 
 def ReGetContig_main(args):
     """
