@@ -4,6 +4,12 @@ def get_versions():
 
 versions = [
     {
+        "number": "0.3.1",
+        "features": [
+            "1. recode for fit the new version of ToolBiox",
+        ],
+    },
+    {
         "number": "0.3.0",
         "features": [
             "1. Remove code for RNA-seq",

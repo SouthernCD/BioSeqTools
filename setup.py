@@ -22,10 +22,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
 
     install_requires=[
-        "toolbiox>=0.0.4",
-        "bcbio-gff>=0.6.6",
-        "biopython>=1.76",
-        "pyfaidx>=0.5.5.2",
+        "toolbiox>=0.0.45",
     ],
 
     python_requires='>=3.5',

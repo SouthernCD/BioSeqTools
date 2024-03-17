@@ -6,7 +6,7 @@ from collections import Counter
 from toolbiox.lib.common.os import mkdir, multiprocess_running
 from toolbiox.lib.xuyuxing.base.common_command import log_print
 from toolbiox.lib.common.util import logging_init
-from toolbiox.api.xuyuxing.file_parser.fileIO import tsv_file_parse, tsv_file_dict_parse
+from toolbiox.lib.common.fileIO import tsv_file_parse, tsv_file_dict_parse
 from toolbiox.lib.common.math.interval import merge_intervals
 from toolbiox.lib.xuyuxing.math.set_operating import uniqify
 from toolbiox.api.xuyuxing.plot.histogram import int_barplot
@@ -91,7 +91,7 @@ def FastaByID_xyx(ID_list, db_fasta_file, output_file, log_file):
     for record in output_dict:
         record.wrap()
         if output_file is not None:
-            F1.write(">%s\n%s\n" % (record.seqname_short(), record.seq))
+            F1.write(">%s\n%s" % (record.seqname_short(), record.seq))
         else:
             print(">%s\n%s" % (record.seqname_short(), record.seq))
     if output_file is not None:
@@ -103,9 +103,9 @@ def FastaByID_xyx(ID_list, db_fasta_file, output_file, log_file):
 
 def FastaByGroup(group_file, db_fasta_file, out_dir, group_name_flag=True):
     if group_name_flag is True:
-        group_list = tsv_file_parse(group_file, key_col=1, seq=",")
+        group_list = tsv_file_parse(group_file, key_col=1, delimiter=",")
     else:
-        group_list = tsv_file_parse(group_file, seq=",", prefix="Group_")
+        group_list = tsv_file_parse(group_file, delimiter=",", prefix="Group_")
     group_list_hash = {}
     for group_name in group_list:
         for record_name in group_list[group_name]:
@@ -148,10 +148,10 @@ def subfasta(db_fasta_file, search_string, input_file, RNA_flag, output_file, be
     if input_file is not None:
         if not bed_file:
             sub_table = tsv_file_parse(
-                input_file, key_col=1, fields="2,3,4,5", seq=",")
+                input_file, key_col=1, fields="2,3,4,5", delimiter=",")
         else:
             sub_table = tsv_file_parse(
-                input_file, key_col=4, fields="1,2,3,6", seq="\t")
+                input_file, key_col=4, fields="1,2,3,6", delimiter="\t")
         print(sub_table)
         if RNA_flag:
             for i in sub_table.keys():
